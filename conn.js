@@ -1602,7 +1602,8 @@ ${setting.group.link}`)
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         var owner_Nya = setting.ownerNumber
         sendContact(from, owner_Nya, setting.ownerName, msg)
-        sendContact(from, `Ekuzika OfC 2`, `6289519009370@s.whatsapp.net`, msg)
+        sendContact(from, `628889616144@s.whatsapp.net`, `Ekuzika OfC 2`, msg)
+        await sleep(1500)
         reply('Chat aja kak, ga usah malu.\nTapi jangan di spam ya!')
       }
         break
@@ -5457,10 +5458,10 @@ Kedalaman :${i.depth}\n\n`
         fs.writeFileSync(`./${anime2}`, buffer_anime)
         var { url } = await UploadFileUgu(anime2)
         try {
-        let image = `https://api.lolhuman.xyz/api/imagetoanime?apikey=AryaXyz&img=${url}`
+        let imageani = `https://api.lolhuman.xyz/api/imagetoanime?apikey=AryaXyz&img=${url}`
           //console.log(image)
           //if (image.code != 200) return reply('Foto gagal di convert')
-          conn.sendMessage(from, { image: { url: image }, caption: 'Nich dah jadi anime kack:v' }, { quoted: msg })
+          conn.sendMessage(from, { image: { url: imageani }, caption: 'Nich dah jadi anime kack:v' }, { quoted: msg })
         } catch (e) {
           console.log(e)
           reply('Emror kack')
