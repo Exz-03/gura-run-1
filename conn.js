@@ -5457,7 +5457,7 @@ Kedalaman :${i.depth}\n\n`
         fs.writeFileSync(`./${anime2}`, buffer_anime)
         var { url } = await UploadFileUgu(anime2)
         try {
-        let image `https://api.lolhuman.xyz/api/imagetoanime?apikey=AryaXyz&img=${url}`
+        let image = `https://api.lolhuman.xyz/api/imagetoanime?apikey=AryaXyz&img=${url}`
           //console.log(image)
           //if (image.code != 200) return reply('Foto gagal di convert')
           conn.sendMessage(from, { image: { url: image }, caption: 'Nich dah jadi anime kack:v' }, { quoted: msg })
