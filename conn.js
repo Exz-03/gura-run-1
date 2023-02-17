@@ -28,7 +28,6 @@ const { virus } = require('./function/virtex/virus')
 const { ngazap } = require('./function/virtex/ngazap')
 
 // database module pelengkap
-const xteamapi = require('xteam-api')
 const fs = require("fs");
 const ms = require("ms");
 const chalk = require('chalk');
@@ -42,7 +41,6 @@ const moment = require("moment-timezone");
 const { Primbon } = require("scrape-primbon");
 const primbon = new Primbon()
 var Jimp = require('jimp');
-var xfar = require('xfarr-api');
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 const Exif = require("./function/set_WM_Sticker")
@@ -1229,25 +1227,24 @@ _Rp60.000 - ( Fitur 600+ )_
         let romnya = `${db_menfes.length}`
         const gurbot = `${ownerNumber}`
         const mark_slebew = '0@s.whatsapp.net'
-        var anumenu = fs.readFileSync('./function/menuPath/menu_nya.jpg')
+        /*var anumenu = fs.readFileSync('./function/menuPath/menu_nya.jpg')
         var jiim = Jimp.read(anumenu, (err, Jim) => {
           if (err) return reply(err)
           Jim
             .resize(1080, 576) // size
             .write(`./function/menuPath/menu_nya2.jpg`); // save
-        })
+        })*/
         var runnya = `${runtime(process.uptime())}`
         var { upload, download } = await checkBandwidth()
-        var footer_nya = `\n*NOTE:* jika menemukan bug/error\nSilahkan lapor ke Owner Bot.\n\n- @${gurbot.split("@")[0]}\n`
+        var footer_nya = `\n*NOTE:* jika menemukan bug/error\nSilahkan lapor ke Owner Bot.\n\n- @${gurbot.split("@")[0]} -\n`
         var menu_nya = `${listmenu(sender, prefix, ad, namenya, premnya, usernya, romnya, tanggal, jam, no, readmore, runnya, upload, download)}`
         let btn_menu = [
-          { buttonId: `${prefix}speedtest`, buttonText: { displayText: '⋮☰ 𝗦𝗣𝗘𝗘𝗗 𝗧𝗘𝗦𝗧' }, type: 1 },
           { buttonId: `${prefix}owner`, buttonText: { displayText: '⋮☰ 𝗢𝗪𝗡𝗘𝗥' }, type: 1 },
+          { buttonId: `${prefix}speedtest`, buttonText: { displayText: '⋮☰ 𝗦𝗣𝗘𝗘𝗗 𝗧𝗘𝗦𝗧' }, type: 1 },
           { buttonId: `${prefix}rules`, buttonText: { displayText: '⋮☰ 𝗥𝗨𝗟𝗘𝗦' }, type: 1 }
         ]
         var but_menu = {
-          image: { url: `./function/menuPath/menu_nya2.jpg` },
-          caption: menu_nya,
+          text: menu_nya,
           footer: footer_nya,
           buttons: btn_menu,
           mentions: [sender, mark_slebew],
@@ -1255,7 +1252,7 @@ _Rp60.000 - ( Fitur 600+ )_
         }
         conn.sendMessage(from, but_menu, { quoted: ftroli })
         await sleep(2500)
-        fs.unlinkSync(`./function/menuPath/menu_nya2.jpg`)
+        //fs.unlinkSync(`./function/menuPath/menu_nya2.jpg`)
       }
         break
       case 'donate':
@@ -1315,20 +1312,22 @@ _Rp60.000 - ( Fitur 600+ )_
         break
       case 'ttp':
         if (!q) return reply(`Example:\n${prefix + command} exz-bot`)
-        xfar.maker.ttp(q).then(data => {
-          console.log(data)
+        try {
+        let ttp2pn = `https://api-xcoders.site/api/maker/ttp2?text=${q}&color=black&apikey=w8ztncCG2vJoGuv`
           var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
-          conn.sendImageAsSticker(from, data.result, msg, opt)
-        })
+          conn.sendImageAsSticker(from, ttp2pn, msg, opt)
+        } catch (e) {
+          reply(`Emror kack`)
+        }
         break
-      case 'attp':
+       /*case 'attp':
         if (!q) return reply(`Example:\n${prefix + command} exz-bot`)
         xteamapi.API.free.attp(q).then(data => {
           console.log(data)
           var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
           conn.sendImageAsSticker(from, data.result, msg, opt)
         })
-        break
+        break */
       case 'pinterest': case 'pin':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Contoh:\n${prefix + command} loli`)
@@ -5331,14 +5330,14 @@ Kedalaman :${i.depth}\n\n`
         //const boug1 = await getBuffer(fbd.download[0].url)
         conn.sendMessage(from, { video: { url: fbd.download[0].url }, caption: `*Done !*\nQuality: ${fbd.download[0].quality}` }, { quoted: msg })
         break
-      case 'twitter': case 'twit': case 'twitt': {
+     /* case 'twitter': case 'twit': case 'twitt': {
         if (!q) return reply(`Example : ${prefix + command} link`)
         if (!q.includes('twitter')) return reply(`Link Invalid!!`)
         reply(mess.wait)
         let anunya = await xfar.downloader.twitter(q)
         conn.sendMessage(from, { video: { url: anunya.quality_720 }, caption: anunya.caption }, { quoted: msg })
       }
-        break
+        break */
       case 'ytdl':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply('*Contoh:*\n#ytdl https://youtu.be/watyplEMt90')
@@ -5457,18 +5456,11 @@ Kedalaman :${i.depth}\n\n`
         var anime2 = 'sticker/' + getRandom('.png')
         fs.writeFileSync(`./${anime2}`, buffer_anime)
         var { url } = await UploadFileUgu(anime2)
-        const { JadiAnime } = require('jadianime-ts')
         try {
-          let opip = {
-            // You can use proxy option if QQ banned your region.
-            proxy: "socks5://58.49.230.248:30001", // https or socks5
-            qqmode: 'world' // Use China or World
-            // You must use china proxy if using qqmode china
-          }
-          let image = await JadiAnime(url, opip)
-          console.log(image)
-          if (image.code != 200) return reply('Foto gagal di convert')
-          conn.sendMessage(from, { image: { url: image.img }, caption: 'Nich dah jadi anime kack:v' }, { quoted: msg })
+        let image `https://api.lolhuman.xyz/api/imagetoanime?apikey=AryaXyz&img=${url}`
+          //console.log(image)
+          //if (image.code != 200) return reply('Foto gagal di convert')
+          conn.sendMessage(from, { image: { url: image }, caption: 'Nich dah jadi anime kack:v' }, { quoted: msg })
         } catch (e) {
           console.log(e)
           reply('Emror kack')
