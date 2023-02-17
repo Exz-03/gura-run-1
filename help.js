@@ -120,7 +120,6 @@ return`
  ${no++} ➳ ${prefix}ytmp3
  ${no++} ➳ ${prefix}play
  ${no++} ➳ ${prefix}ytsearch
- ${no++} ➳ ${prefix}twitter
  ${no++} ➳ ${prefix}igfoto
  ${no++} ➳ ${prefix}igvideo
  ${no++} ➳ ${prefix}igreels
