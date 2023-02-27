@@ -128,9 +128,10 @@ return`
  ${no++} ➳ ${prefix}pinterest
  ${no++} ➳ ${prefix}gitclone
  ${no++} ➳ ${prefix}wikimedia
- ${no++} ➳ ${prefix}infogempa
+ ${no++} ➳ ${prefix}mediafire
 
  𝘾𝙊𝙉𝙑𝙀𝙍𝙏 𝙈𝙀𝙉𝙐 
+ ${no++} ➳ ${prefix}attp
  ${no++} ➳ ${prefix}tts
  ${no++} ➳ ${prefix}ttp
  ${no++} ➳ ${prefix}semoji
@@ -145,12 +146,15 @@ return`
  ${no++} ➳ ${prefix}stickerwm
  ${no++} ➳ ${prefix}stickermeme
  ${no++} ➳ ${prefix}takesticker
+ ${no++} ➳ ${prefix}stickersearch
 
  𝙏𝙊𝙊𝙇𝙎 𝙈𝙀𝙉𝙐 
  ${no++} ➳ ${prefix}spamwa
  ${no++} ➳ ${prefix}ai
  ${no++} ➳ ${prefix}jadianime
  ${no++} ➳ ${prefix}translate
+ ${no++} ➳ ${prefix}nulis
+ ${no++} ➳ ${prefix}ktpmaker
  ${no++} ➳ ${prefix}ssweb-pc
  ${no++} ➳ ${prefix}ssweb-hp
  ${no++} ➳ ${prefix}kali 1 2
@@ -251,9 +255,8 @@ return`
  ${no++} ➳ ${prefix}nightcore
 
  𝙄𝙉𝙁𝙊𝙍𝙈𝘼𝙏𝙄𝙊𝙉 𝙈𝙀𝙉𝙐 
- ${no++} ➳ ${prefix}gempa
+ ${no++} ➳ ${prefix}infogempa
  ${no++} ➳ ${prefix}jadwaltv
- ${no++} ➳ ${prefix}gempanow
  ${no++} ➳ ${prefix}bioskopnow
  ${no++} ➳ ${prefix}latintoaksara
  ${no++} ➳ ${prefix}aksaratolatin
