@@ -1390,12 +1390,24 @@ _Rp55.000 - ( Fitur 500+ )_
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Contoh:\n${prefix + command} loli`)
         reply(mess.wait)
-        fetchJson(`https://saipulanuar.ga/api/search/pinterest?query=${q}&apikey=jPHjZpQF`)
-          .then(pin => {
-            var media = pickRandom(pin.result)
-            var pinter = [{ buttonId: `!pinterest ${q}`, buttonText: { displayText: '⋮☰ NEXT' }, type: 1 }]
-            conn.sendMessage(from, { caption: `Done *${q}*`, image: { url: media }, buttons: pinter, footer: '© created by GuraBot - MD' })
+        var xa = require('xfarr-api');
+        xa.search.pinterest(q)
+          .then(pinn => {
+            console.log(pinn)
+            if (pinn.status != 200) return reply(`Sedang error`)
+            //var mediapin = pickRandom(pinn.result)
+            var pinterr = [{ buttonId: `!pin ${q}`, buttonText: { displayText: '⋮☰ NEXT' }, type: 1 }]
+            conn.sendMessage(from, { caption: `Done *${q}*`, image: { url: pinn.url }, buttons: pinterr, footer: '© created by GuraBot - MD' })
           })
+        break
+     case 'darkjoke':
+      case 'darkjokes':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+        reply(mess.wait)
+        const dhn_api = require("dhn-api");
+        let resss = await dhn_api.Darkjokes()
+        console.log(resss)
+        conn.sendImage(from, resss, 'hehe :v', msg)
         break
       case 'tts': {
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
