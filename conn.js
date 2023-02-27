@@ -88,7 +88,6 @@ module.exports = async (conn, msg, m, setting, store) => {
     const prefix = /^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/.test(chats) ? chats.match(/^[°•π÷×¶∆£¢€¥®™✓_=|~!?#$%^&.+-,\/\\©^]/gi) : '#'
     const isGroup = msg.key.remoteJid.endsWith('@g.us')
     const sender = isGroup ? (msg.key.participant ? msg.key.participant : msg.participant) : msg.key.remoteJid
-    const isOwner = [`${setting.ownerNumber}`, "6289519009370@s.whatsapp.net"].includes(sender) ? true : false
     const pushname = msg.pushName
     const body = chats.startsWith(prefix) ? chats : ''
     const args = body.trim().split(/ +/).slice(1);
@@ -97,6 +96,7 @@ module.exports = async (conn, msg, m, setting, store) => {
     const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
     const isCmd = isCommand ? body.slice(1).trim().split(/ +/).shift().toLowerCase() : null;
     const botNumber = conn.user.id.split(':')[0] + '@s.whatsapp.net'
+    const isOwner = [`${setting.ownerNumber}`, "628889616144@s.whatsapp.net", botNumber].includes(sender) ? true : false
 
     const groupMetadata = isGroup ? await conn.groupMetadata(from) : ''
     const groupName = isGroup ? groupMetadata.subject : ''
