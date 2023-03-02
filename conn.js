@@ -319,34 +319,14 @@ module.exports = async (conn, msg, m, setting, store) => {
     if (isGroup && isAutoDownTT) {
       if (chats.match(/(tiktok.com)/gi)) {
         reply('Url tiktok terdekteksi\nWait mengecek data url.')
-        await sleep(1000)
-        try {
-          var ttdl_auto = await fetchJson(`https://rest-api-bwb9.onrender.com/api/dowloader/tikok?url=${chats}&apikey=86541bad`)
-          if (ttdl_auto.status == false) return reply(`Url timdak valid cok.`)
-          var tiktaut = ttdl_auto.result
-          let taudl = `
-          ┍─────────◉
-          ︱⊦⊸ Author : GuraBot - MD
-          ︱⊦⊸ Username : ${tikaut.username}
-          ︱⊦⊸ Deskripsi : ${tiktaut.description}
-          ┕──◉
-  `
-          let btn_ttaut = [
-            { buttonId: `${prefix}ttmp3 ${chats}`, buttonText: { displayText: '⋮☰ AUDIO' }, type: 1 },
-            { buttonId: `${prefix}ttmp4 ${chats}`, buttonText: { displayText: '⋮☰ NO WM' }, type: 1 }
-          ]
-          var but_ttaut = {
-            image: { url: 'https://telegra.ph/file/e19e6be2b5c2750793185.jpg' },
-            caption: '          ❒ 𝗧𝗜𝗞𝗧𝗢𝗞 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗 ❒',
-            footer: taudl,
-            buttons: btn_ttaut,
-            mentions: [sender],
-            headerType: 4
-          }
-          conn.sendMessage(from, but_ttaut, { quoted: msg })
-        } catch (err) {
-          reply('Terjadi Kesalahan!!\nUrl tidak valid')
-        }
+          var btn_ttmp3 = [
+          { buttonId: `!ttmp3 ${q}`, buttonText: { displayText: '⋮☰ 𝐌𝐏𝟑' }, type: 1 },
+        ]
+        require('./function/tiktok').Tiktok(q).then(data => {
+        conn.sendMessage(from, { caption: 'Done !*', video: { url: data.nowm }, buttons: btn_ttmp3, footer: '© Gurabot - MD' })
+        }).catch(e => {
+        reply('error masbroo')
+        console.log(e)
       }
     }
 
@@ -1174,7 +1154,7 @@ updated : ${git.updated_at}`
         var imgverify = 'https://i.postimg.cc/76GsLZ3n/carbon-verify.png'
         var itumenu = 'https://i.postimg.cc/nVwH9jYv/bocil2.jpg'
         mentions(`𝖬𝖾𝗆𝗎𝖺𝗍 𝖴𝗌𝖾𝗋 @${sender.split("@")[0]}`, [sender])
-        await sleep(1500)
+        await sleep(1000)
         var verify_teks = `───「 𝗧𝗘𝗥𝗩𝗘𝗥𝗜𝗙𝗜𝗞𝗔𝗦𝗜 」────
 
 ○ ID : @${sender.split('@')[0]}
@@ -1336,7 +1316,7 @@ _Rp55.000 - ( Fitur 500+ )_
       case 'ktp':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!isQuotedImage && !isImage) return reply(`Kirim/reply image dengan caption ${prefix + command} nik&nama&tempat tanggal lahir&jenis kelamin&gol. darah&alamat&rt/rw&kel.&kec.&agama&status&pekerjaan&kewarganegaraan&berlaku hingga&prov.&kab.`)
-        if (!q1 && !q2 && !q3 && !q4 && !q5 && !q6 && !q7 && !q8 && !q9 && !q10 && !q11 && !q12 && !q13 && !q14 && !q15 && !q16) return reply(`Example:\n\n${prefix + command} nik&nama&tempat tanggal lahir&jenis kelamin&gol. darah&alamat&rt/rw&kel.&kec.&agama&status&pekerjaan&kewarganegaraan&berlaku hingga&prov.&kab.\n\n${prefix + command} 012345678910&Ekuzika&JakBar, 1-2-2031&Cowok&abc&di jakbar&09/01&palmerah&Palmerah&Islam rill&pacar nya orang&nonton anime di rumah&Indo Jepang&Kehapus fotonya:v&DKI Jakarta&JakBar`)
+        if (!q1 && !q2 && !q3 && !q4 && !q5 && !q6 && !q7 && !q8 && !q9 && !q10 && !q11 && !q12 && !q13 && !q14 && !q15 && !q16) return reply(`Example:\n\n${prefix + command} nik&nama&tempat tanggal lahir&jenis kelamin&gol. darah&alamat&rt/rw&kel.&kec.&agama&status&pekerjaan&kewarganegaraan&berlaku hingga&prov.&kab.`)
         if (!q1) return reply(`nik lu?`)
         if (!q2) return reply(`nama lu?`)
         if (!q3) return reply(`ttg lu?`)
@@ -1423,14 +1403,14 @@ _Rp55.000 - ( Fitur 500+ )_
         let search = await yts(q)
         let searchh = search.videos[Math.floor(Math.random() * search.videos.length)]
         //console.log(searchh)
-        lnk = searchh.url
+        let lnk = searchh.url
         let resbuf = await fetchJson(`https://rest-api-bwb9.onrender.com/api/dowloader/yt?url=${lnk}&apikey=86541bad`)
         //if (rez.result[0].type !== 'video') return reply('Silahkan cari dengan kata kunci lain.')
         var txt_play = `
                 *YOUTUBE - PLAY*
   
 ▫ *𝙏𝙞𝙩𝙡𝙚:* ${searchh.title}
-▫ *𝘾𝙝𝙖𝙣𝙣𝙚𝙡:* ${searchh.author.url}
+▫ *𝘾𝙝𝙖𝙣𝙣𝙚𝙡:* ${resbuf.result.channel}
 ▫ *𝙋𝙪𝙗𝙡𝙞𝙨𝙝𝙚𝙙:* ${searchh.ago}
 ▫ *𝙑𝙞𝙚𝙬𝙨:* ${searchh.views}
 ▫ *𝙇𝙞𝙣𝙠:* ${resbuf.result.mp4.result}
@@ -1617,7 +1597,8 @@ ${setting.group.link}`)
       }
         break
       case 'speedtest':
-      case 'testspeed': {
+      case 'testspeed': 
+      case 'speed': {
         reply('*Testing Speed . . .*')
         let cp = require('child_process')
         let { promisify } = require('util')
@@ -2817,6 +2798,7 @@ _Topup & Deposit_`
       case 'stikerwm':
       case 'stickerwm':
       case 'takesticker':
+      case 'colong':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (cekUser("premium", sender) == false) return reply(mess.OnlyPrem)
         if (!q) return reply(`Kirim video/foto dengan caption ${prefix + command} packname|author atau balas video/foto yang sudah dikirim`)
@@ -4604,7 +4586,7 @@ case 'stickeranjing':
         mentions(`Sukses kirim *${command}* to @${num.split('@')[0]}`, [num])
       }
         break
-      case 'tiktokdl': case 'ttdl': case 'tiktok': {
+     /* case 'tiktokdl': case 'ttdl': case 'tiktok': {
         if (!q) return reply('contoh :\n#tiktokdl https://vt.tiktok.com/ZSRG695C8/')
         reply(mess.wait)
         try {
@@ -4612,18 +4594,18 @@ case 'stickeranjing':
           if (ttdl_res.status == false) return reply(`Url timdak valid cok.`)
           var tiktod = ttdl_res.result
           let tdl = `
-        ┍────────────◉
-        ︱⊦⊸ Author : GuraBot - MD
-        ︱⊦⊸ Username : ${tiktod.username}
-        ︱⊦⊸ Deskripsi : ${tiktod.description}
-        ┕─────◉
+    ┍────────────◉
+    ︱⊦⊸ Author : GuraBot - MD
+    ︱⊦⊸ Username : ${tiktod.username}
+    ︱⊦⊸ Deskripsi : ${tiktod.description}
+    ┕─────◉
   `
           let btn_ttdl = [
             { buttonId: `${prefix}ttmp3 ${q}`, buttonText: { displayText: '⋮☰ AUDIO' }, type: 1 },
             { buttonId: `${prefix}ttmp4 ${q}`, buttonText: { displayText: '⋮☰ NO WM' }, type: 1 }
           ]
           var but_ttdl = {
-            image: { url: 'https://telegra.ph/file/e19e6be2b5c2750793185.jpg' },
+            image: { url: tiktod.pp },
             caption: '                       ❒ 𝗧𝗜𝗞𝗧𝗢𝗞 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗 ❒',
             footer: tdl,
             buttons: btn_ttdl,
@@ -4634,15 +4616,21 @@ case 'stickeranjing':
         } catch (err) {
           reply('Terjadi Kesalahan!!\nUrl tidak valid')
         }
-      }
+      }*/
         break
+      case 'tt':
+      case 'ttdl':
+      case 'tiktok':
       case 'ttmp4':
       case 'tiktokmp4': {
         if (!q) return reply(`Example : ${prefix + command} link`)
         if (!q.includes('tiktok.com')) return reply(`Link Invalid!!`)
         reply(mess.wait)
+        var btn_ttmp3 = [
+          { buttonId: `!ttmp3 ${q}`, buttonText: { displayText: '⋮☰ 𝐌𝐏𝟑' }, type: 1 },
+        ]
         require('./function/tiktok').Tiktok(q).then(data => {
-          conn.sendMessage(from, { video: { url: data.nowm } }, { quoted: msg })
+        conn.sendMessage(from, { caption: 'Done !*', video: { url: data.nowm }, buttons: btn_ttmp3, footer: '© Gurabot - MD' })
         })
       }
         break
@@ -4653,10 +4641,7 @@ case 'stickeranjing':
           conn.sendMessage(from, { audio: { url: data.audio }, mimetype: 'audio/mp4', fileName: data.title + '.mp3' }, { quoted: msg })
         })
         break
-      case 'ig':
-        if (!q) return reply(`Opsi pilihan downloader Instagram:\n\n1) .igfoto <link>\n2) .igvideo <link>\n3) .igreel <link>\n4) .igtv <link>\n5) .igstory <link>`)
-        break
-      case 'igfoto': case 'igpost': case 'igvideo': case 'igvid': case 'igreels': case 'igreel': case 'igtv': {
+      case 'ig': {
         if (!q) return reply(`Link nya mana?\n*contoh:*\nhttps://www.instagram.com/reel/CSa7MWrlgri/`)
         if (!q.includes('instagram')) return reply(`Link timdack valid.`)
         reply(mess.wait)
@@ -4695,15 +4680,21 @@ case 'stickeranjing':
         };
         break*/
       case 'fbdownload': case 'fb':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Example:\n${prefix + command} https://www.facebook.com/botikaonline/videos/837084093818982`)
         // if (!q.includes('facebook.com')) return reply(`Itu bukan link facebook!`)
-        var bochil = require("fb-downloader-scrapper")
-        var fbd = await bochil(q)
+        try {
+        var bochil = await fetchJson(`https://rest-api-bwb9.onrender.com/api/dowloader/fbdown?url=${q}&apikey=86541bad`)
+        var fbd = bochil.result
         console.log(fbd)
-        if (fbd.success !== true) return reply(`Link download tidak tersedia, mungkin link error/tidak valid.`)
+        if (bochil.status !== true) return reply(`Link download tidak tersedia, mungkin link error/tidak valid.`)
         conn.sendMessage(from, { text: `Wait . . .` }, { quoted: msg })
         //const boug1 = await getBuffer(fbd.download[0].url)
-        conn.sendMessage(from, { video: { url: fbd.download[0].url }, caption: `*Done !*\n*Quality:* ${fbd.download[0].quality}` }, { quoted: msg })
+        conn.sendMessage(from, { video: { url: fbd.normal_video }, caption: `*Done !*\n*Quality:* Done!` }, { quoted: msg })
+        } catch(e) {
+        reply(`Error masbroo...`)
+        console.log(e)
+        }
         break
      /* case 'twitter': case 'twit': case 'twitt': {
         if (!q) return reply(`Example : ${prefix + command} link`)
@@ -4751,7 +4742,7 @@ case 'stickeranjing':
         const data = await yts(q);
         for (let a of data.all) {
           list_rows.push({
-            title: a.title, description: `Channel: ${a.author.name}\nDurasi: ${a.duration}`, rowId: `.ytmp4 ${a.url}`
+            title: a.title, description: `Published: ${a.ago}\nDurasi: ${a.duration} | Views: ${a.views}`, rowId: `.ytmp4 ${a.url}`
           })
         }
         const buttonNya = {
@@ -4768,13 +4759,12 @@ case 'stickeranjing':
         break
       case 'ai':
       case 'openai':
-      case 'gura':
+      case 'guraa':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Chat dengan AI.\n\nContoh:\n${prefix}${command} Apa itu rest api`)
         reply(mess.wait)
         try {
           var configuration = new Configuration({
-            organization: "org-W7mm5jfj0hVwroQrR7bAOtK4",
             apiKey: "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",
           });
           let openai = new OpenAIApi(configuration);
@@ -4799,7 +4789,6 @@ case 'stickeranjing':
         if (!q) return reply(`Mencari gambar/foto dari Ai.\n\nContoh:\n${prefix}${command} gunung Bromo `)
         try {
           let configuration = new Configuration({
-            organization: "org-W7mm5jfj0hVwroQrR7bAOtK4",
             apiKey: "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",
           });
           let openai = new OpenAIApi(configuration);
@@ -4840,6 +4829,20 @@ case 'stickeranjing':
         }
         fs.unlinkSync(anime2)
         fs.unlinkSync(`./sticker/${sender.split("@")[0]}.jpg`)
+        break
+    case 'rmbg':
+    case 'removebg':
+    case 'remove.bg':
+        if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
+        if (!isImage && !isQuotedImage) return reply(`Kirim/reply foto yang ingin di removebg nya dengan caption ${prefix + command}`)
+        var rmb_ny = await conn.downloadAndSaveMediaMessage(msg, 'image', './sticker/rmbg.jpg')
+        reply(mess.wait)
+        let buff_rm = fs.readFileSync(rmb_ny)
+        var rmb = 'sticker/' + getRandom('.png')
+        fs.writeFileSync(`./${rmb}`, buff_rm)
+        var { url } = await UploadFileUgu(rmb)
+        let img_rmbg = `https://api.ibeng.tech/api/maker/rmbg?url=${url}&apikey=tamvan`
+        conn.sendMessage(from, { image: { url: img_rmbg }, caption: 'Done' }, {quoted:msg})
         break
         case 'xnxx':
         case 'xnxxsearch':
