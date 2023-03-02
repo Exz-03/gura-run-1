@@ -327,8 +327,9 @@ module.exports = async (conn, msg, m, setting, store) => {
         }).catch(e => {
         reply('error masbroo')
         console.log(e)
-      }
+      })
     }
+}
 
     if (!isCmd && isGroup && isAlreadyResponList(from, chats, db_respon_list)) {
       var get_data_respon = getDataResponList(from, chats, db_respon_list)
