@@ -11,7 +11,6 @@ const { removeEmojis, bytesToSize, getBuffer, fetchJson, getRandom, getGroupAdmi
 const { TelegraPh, UploadFileUgu, AnonFiles } = require("./function/uploader_Media");
 const { addResponList, delResponList, isAlreadyResponList, isAlreadyResponListGroup, sendResponList, updateResponList, getDataResponList } = require('./function/func_Addlist');
 const { media_JSON, mess_JSON, setting_JSON, antilink_JSON, db_user_JSON, server_eror_JSON, welcome_JSON, db_menfes_JSON, db_respon_list_JSON, auto_downloadTT_JSON } = require('./function/Data_Location.js')
-const { mediafireDl } = require('./function/scrape_Mediafire')
 const { webp2mp4File } = require("./function/Webp_Tomp4")
 const { cerpen } = require('./function/Search_Cerpen')
 const { bioskop, bioskopNow, latinToAksara, aksaraToLatin, gempa, gempaNow, jadwalTV, listJadwalTV, jadwalsholat } = require('@bochilteam/scraper')
@@ -319,15 +318,21 @@ module.exports = async (conn, msg, m, setting, store) => {
     if (isGroup && isAutoDownTT) {
       if (chats.match(/(tiktok.com)/gi)) {
         reply('Url tiktok terdekteksi\nWait mengecek data url.')
-          var btn_ttmp3 = [
-          { buttonId: `!ttmp3 ${q}`, buttonText: { displayText: '⋮☰ 𝐌𝐏𝟑' }, type: 1 },
+        var btn_ttgc = [
+          { buttonId: `!ttmp3 ${chats}`, buttonText: { displayText: '⋮☰ 𝐌𝐏𝟑' }, type: 1 },
         ]
-        require('./function/tiktok').Tiktok(q).then(data => {
-        conn.sendMessage(from, { caption: 'Done !*', video: { url: data.nowm }, buttons: btn_ttmp3, footer: '© Gurabot - MD' })
-        }).catch(e => {
-        reply('error masbroo')
-        console.log(e)
-      })
+let tt_gc = await fetchJson(`https://api.akuari.my.id/downloader/tiktok3?link=${chats}`)
+ if (tt_gc.message) return reply(tt_gc.message)
+var dl_gc = tt_gc.hasil
+let ttgc_cap = ` Tiktok - Downloader 
+
+Username: ${dl_gc.username}
+Like: ${dl_gc.like}
+Comment: ${dl_gc.comment}
+Share: ${dl_gc.share}
+Views: ${dl_gc.views}
+`
+        conn.sendMessage(from, { caption: ttgc_cap, video: { url: dl_gc.download_mp4_hd }, buttons: btn_ttgc, footer: '© Gurabot - MD' })
     }
 }
 
@@ -1405,7 +1410,8 @@ _Rp55.000 - ( Fitur 500+ )_
         let searchh = search.videos[Math.floor(Math.random() * search.videos.length)]
         //console.log(searchh)
         let lnk = searchh.url
-        let resbuf = await fetchJson(`https://rest-api-bwb9.onrender.com/api/dowloader/yt?url=${lnk}&apikey=86541bad`)
+        let resbuf = await fetchJson(`https://api.ibeng.tech/api/download/ytmp4?url=${lnk}&apikey=tamvan`)
+        var shrturl = await fetchJson(`https://api.akuari.my.id/short/tinyurl?link=${resbuf.result.url}`)
         //if (rez.result[0].type !== 'video') return reply('Silahkan cari dengan kata kunci lain.')
         var txt_play = `
                 *YOUTUBE - PLAY*
@@ -1414,12 +1420,12 @@ _Rp55.000 - ( Fitur 500+ )_
 ▫ *𝘾𝙝𝙖𝙣𝙣𝙚𝙡:* ${resbuf.result.channel}
 ▫ *𝙋𝙪𝙗𝙡𝙞𝙨𝙝𝙚𝙙:* ${searchh.ago}
 ▫ *𝙑𝙞𝙚𝙬𝙨:* ${searchh.views}
-▫ *𝙇𝙞𝙣𝙠:* ${resbuf.result.mp4.result}
+▫ *𝙇𝙞𝙣𝙠:* ${shrturl.hasil}
 `
         var btn_ply = [
           { buttonId: `!ytmp3 ${lnk}`, buttonText: { displayText: '⋮☰ 𝐏𝐋𝐀𝐘 𝐌𝐏𝟑' }, type: 1 },
         ]
-        conn.sendMessage(from, { caption: txt_play, video: { url: resbuf.result.mp4.result }, buttons: btn_ply, footer: '© Gurabot - MD' })
+        conn.sendMessage(from, { caption: txt_play, video: { url: resbuf.result.url }, buttons: btn_ply, footer: '© Gurabot - MD' })
         break
       case 'playmp3':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
@@ -1474,22 +1480,22 @@ _Rp55.000 - ( Fitur 500+ )_
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         try {
           if (!q) return reply('*Contoh:*\n#ytmp3 https://youtu.be/MbBGlyAzgz8')
-          let mmny = await fetchJson(`https://rest-api-bwb9.onrender.com/api/dowloader/yt?url=${q}&apikey=86541bad`)
-          if (mmny.status == false) return reply('Url yang anda masukan tidak valid!')
+          let mmny = await fetchJson(`https://api.ibeng.tech/api/download/ytmp3?url=${q}&apikey=tamvan`)
+          if (mmny.status != true) return reply('Url yang anda masukan tidak valid!')
+          var shrturl = await fetchJson(`https://api.akuari.my.id/short/tinyurl?link=${mmny.result.url}`)
           //console.log(mmny.result)
           reply(mess.wait)
-          let mp3nya = mmny.result.mp3
           let tymp3 = `                     *YOUTUBE - MP3*
 
 ▫ *𝙏𝙞𝙩𝙡𝙚:* ${mmny.result.title}
 ▫ *𝙑𝙞𝙚𝙬𝙨:* ${mmny.result.view}
 ▫ *𝘾𝙝𝙖𝙣𝙣𝙚𝙡:* ${mmny.result.channel}
-▫ *𝙋𝙪𝙗𝙡𝙞𝙨𝙝𝙚𝙙:*  ${mmny.result.uploadDate}
-▫ *𝙇𝙞𝙣𝙠:* ${mp3nya.result}
+▫ *𝙋𝙪𝙗𝙡𝙞𝙨𝙝𝙚𝙙:*  ${mmny.result.published}
+▫ *𝙇𝙞𝙣𝙠:* ${shrturl.hasil}
 `
-          conn.sendMessage(from, { image: { url: mmny.result.thum }, caption: tymp3 }, { quoted: msg })
+          conn.sendMessage(from, { image: { url: mmny.result.thumb }, caption: tymp3 }, { quoted: msg })
           await sleep(1000)
-          conn.sendMessage(from, { audio: { url: mp3nya.result }, mimetype: 'audio/mpeg', fileName: mmny.result.title + '.mp3' }, { quoted: msg })
+          conn.sendMessage(from, { audio: { url: mmny.result.url }, mimetype: 'audio/mpeg', fileName: mmny.result.title + '.mp3' }, { quoted: msg })
         } catch (err) {
           reply(err)
         }
@@ -1499,28 +1505,21 @@ _Rp55.000 - ( Fitur 500+ )_
         try {
           if (!q) return reply('*Contoh:*\n#ytmp4 https://youtu.be/MbBGlyAzgz8')
           reply(mess.wait)
-          var searchmp4 = await yts(q)
-          let searchhmp4 = searchmp4.all[0]
-          var inisearch = searchhmp4.url
-          //console.log(searchhmp4)
-          let mmm = await fetchJson(`https://rest-api-bwb9.onrender.com/api/dowloader/yt?url=${inisearch}&apikey=86541bad`)
-          //if (mmm.status == false) return reply('Url yang anda masukan tidak valid!')
-          //console.log(mmm.result)
-          let mp4nya = mmm.result.mp4
-          await sleep(1500)
-          if (searchhmp4.seconds >= 600) return reply(`[   !   ] File melebihi batas\n\nLink Download: ${mp4nya.result}`)
+          let yt_mp4 = await fetchJson(`https://api.ibeng.tech/api/download/ytmp4?url=${q}&apikey=tamvan`)
+          if (yt_mp4.status != true) return reply('Link tidak valid!')
+          var shrturl = await fetchJson(`https://api.akuari.my.id/short/tinyurl?link=${yt_mp4.result.url}`)
           var btn_mp4 = [
             { buttonId: `!ytmp3 ${q}`, buttonText: { displayText: '⋮☰ PLAY MP3' }, type: 1 },
           ]
           let tymp4 = `                     *YOUTUBE - MP4*
 
-▫ *𝙏𝙞𝙩𝙡𝙚:* ${mmm.result.title}
-▫ *𝙑𝙞𝙚𝙬𝙨:* ${mmm.result.view}
-▫ *𝘾𝙝𝙖𝙣𝙣𝙚𝙡:* ${mmm.result.channel}
-▫ *𝙋𝙪𝙗𝙡𝙞𝙨𝙝𝙚𝙙:*  ${mmm.result.uploadDate}
-▫ *𝙇𝙞𝙣𝙠:* ${mp4nya.result}
+▫ *𝙏𝙞𝙩𝙡𝙚:* ${yt_mp4.result.title}
+▫ *𝙑𝙞𝙚𝙬𝙨:* ${yt_mp4.result.view}
+▫ *𝘾𝙝𝙖𝙣𝙣𝙚𝙡:* ${yt_mp4.result.channel}
+▫ *𝙋𝙪𝙗𝙡𝙞𝙨𝙝𝙚𝙙:*  ${yt_mp4.result.published}
+▫ *𝙇𝙞𝙣𝙠:* ${shrturl.hasil}
 `
-          conn.sendMessage(from, { caption: tymp4, video: { url: mp4nya.result }, buttons: btn_mp4, footer: '© Gurabot - MD' })
+          conn.sendMessage(from, { caption: tymp4, video: { url: yt_mp4.result.url }, buttons: btn_mp4, footer: '© Gurabot - MD' })
         } catch (err) {
           reply('Url yang anda masukan/Rest api mungkin error!')
         }
@@ -4624,26 +4623,36 @@ case 'stickeranjing':
       case 'tiktok':
       case 'ttmp4':
       case 'tiktokmp4': {
-        if (!q) return reply(`Example : ${prefix + command} link`)
+        if (!q) return reply(`Example : ${prefix + command} https://www.tiktok.com/@echaammq/video/7204778953771339034`)
         if (!q.includes('tiktok.com')) return reply(`Link Invalid!!`)
         reply(mess.wait)
         var btn_ttmp3 = [
           { buttonId: `!ttmp3 ${q}`, buttonText: { displayText: '⋮☰ 𝐌𝐏𝟑' }, type: 1 },
         ]
-        require('./function/tiktok').Tiktok(q).then(data => {
-        conn.sendMessage(from, { caption: 'Done !*', video: { url: data.nowm }, buttons: btn_ttmp3, footer: '© Gurabot - MD' })
-        })
+let tt_dl = await fetchJson(`https://api.akuari.my.id/downloader/tiktok3?link=${q}`)
+ if (tt_dl.message) return reply(tt_dl.message)
+var dl_tt = tt_dl.hasil
+let tt_cap = ` Tiktok - Downloader 
+
+Username: ${dl_tt.username}
+Like: ${dl_tt.like}
+Comment: ${dl_tt.comment}
+Share: ${dl_tt.share}
+Views: ${dl_tt.views}
+`
+        conn.sendMessage(from, { caption: tt_cap, video: { url: dl_tt.download_mp4_hd }, buttons: btn_ttmp3, footer: '© Gurabot - MD' })
       }
         break
       case 'ttmp3':
       case 'tiktokmp3':
         if (!q) return reply('Mana url nya')
-        require('./function/tiktok').Tiktok(q).then(data => {
-          conn.sendMessage(from, { audio: { url: data.audio }, mimetype: 'audio/mp4', fileName: data.title + '.mp3' }, { quoted: msg })
-        })
+        let titik = await fetchJson(`https://api.akuari.my.id/downloader/tiktok3?link=${q}`)
+        if (titik.message) return reply(titik.message)
+var dl_tit = titik.hasil
+          conn.sendMessage(from, { audio: { url: dl_tit.download_mp3 }, mimetype: 'audio/mp4', fileName: dl_tit.music_title + '.mp3' }, { quoted: msg })
         break
       case 'ig': {
-        if (!q) return reply(`Link nya mana?\n*contoh:*\nhttps://www.instagram.com/reel/CSa7MWrlgri/`)
+        if (!q) return reply(`Link nya mana?\n*contoh:*\n${prefix + command} https://www.instagram.com/reel/CSa7MWrlgri/`)
         if (!q.includes('instagram')) return reply(`Link timdack valid.`)
         reply(mess.wait)
         const instagramGetUrl = require("instagram-url-direct")
@@ -4683,15 +4692,15 @@ case 'stickeranjing':
       case 'fbdownload': case 'fb':
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!q) return reply(`Example:\n${prefix + command} https://www.facebook.com/botikaonline/videos/837084093818982`)
-        // if (!q.includes('facebook.com')) return reply(`Itu bukan link facebook!`)
+        if (q.includes('reel')) return reply(`Tidak support download fb-reel`)
         try {
-        var bochil = await fetchJson(`https://rest-api-bwb9.onrender.com/api/dowloader/fbdown?url=${q}&apikey=86541bad`)
+        var bochil = await fetchJson(`https://api.ibeng.tech/api/download/fb?url=${q}&apikey=tamvan`)
         var fbd = bochil.result
         console.log(fbd)
         if (bochil.status !== true) return reply(`Link download tidak tersedia, mungkin link error/tidak valid.`)
         conn.sendMessage(from, { text: `Wait . . .` }, { quoted: msg })
         //const boug1 = await getBuffer(fbd.download[0].url)
-        conn.sendMessage(from, { video: { url: fbd.normal_video }, caption: `*Done !*\n*Quality:* Done!` }, { quoted: msg })
+        conn.sendMessage(from, { video: { url: fbd.hd }, caption: `*Done !*\n` }, { quoted: msg })
         } catch(e) {
         reply(`Error masbroo...`)
         console.log(e)
@@ -4743,7 +4752,7 @@ case 'stickeranjing':
         const data = await yts(q);
         for (let a of data.all) {
           list_rows.push({
-            title: a.title, description: `Published: ${a.ago}\nDurasi: ${a.duration} | Views: ${a.views}`, rowId: `.ytmp4 ${a.url}`
+            title: a.title, description: `Published: ${a.ago}\nDurasi: ${a.duration} | Views: ${a.views} |`, rowId: `.ytmp4 ${a.url}`
           })
         }
         const buttonNya = {
@@ -4766,7 +4775,7 @@ case 'stickeranjing':
         reply(mess.wait)
         try {
           var configuration = new Configuration({
-            apiKey: "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",
+            apiKey: "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",
           });
           let openai = new OpenAIApi(configuration);
           let response = await openai.createCompletion({
@@ -4790,7 +4799,7 @@ case 'stickeranjing':
         if (!q) return reply(`Mencari gambar/foto dari Ai.\n\nContoh:\n${prefix}${command} gunung Bromo `)
         try {
           let configuration = new Configuration({
-            apiKey: "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",
+            apiKey: "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",
           });
           let openai = new OpenAIApi(configuration);
           let response = await openai.createImage({
