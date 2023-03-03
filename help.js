@@ -22,8 +22,7 @@ return`
  Room Chat : ${romnya}
  
  Runtime : ${runnya}
- Upload : ${upload}
- Download : ${download}
+ 
  ${readmore} 
 
  𝙈𝘼𝙄𝙉 𝙈𝙀𝙉𝙐 
@@ -153,6 +152,10 @@ return`
  ${no++} ➳ ${prefix}ai
  ${no++} ➳ ${prefix}jadianime
  ${no++} ➳ ${prefix}translate
+ ${no++} ➳ ${prefix}gura
+ ${no++} ➳ ${prefix}loliggo
+ ${no++} ➳ ${prefix}sadboy
+ ${no++} ➳ ${prefix}kaneki
  ${no++} ➳ ${prefix}nulis
  ${no++} ➳ ${prefix}ktpmaker
  ${no++} ➳ ${prefix}ssweb-pc
