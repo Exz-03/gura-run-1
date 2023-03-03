@@ -1161,8 +1161,7 @@ updated : ${git.updated_at}`
         var itumenu = 'https://i.postimg.cc/nVwH9jYv/bocil2.jpg'
         mentions(`𝖬𝖾𝗆𝗎𝖺𝗍 𝖴𝗌𝖾𝗋 @${sender.split("@")[0]}`, [sender])
         await sleep(1000)
-        var verify_teks = `───「 𝗧𝗘𝗥𝗩𝗘𝗥𝗜𝗙𝗜𝗞𝗔𝗦𝗜 」────
-
+        var verify_teks = `
 ○ ID : @${sender.split('@')[0]}
 ○ Name : ${user_name}
 ○ Status : ${cekUser("premium", sender) ? 'Premium User' : 'Free User'}
@@ -1323,22 +1322,22 @@ _Rp55.000 - ( Fitur 500+ )_
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
         if (!isQuotedImage && !isImage) return reply(`Kirim/reply image dengan caption ${prefix + command} nik&nama&tempat tanggal lahir&jenis kelamin&gol. darah&alamat&rt/rw&kel.&kec.&agama&status&pekerjaan&kewarganegaraan&berlaku hingga&prov.&kab.`)
         if (!q1 && !q2 && !q3 && !q4 && !q5 && !q6 && !q7 && !q8 && !q9 && !q10 && !q11 && !q12 && !q13 && !q14 && !q15 && !q16) return reply(`Example:\n\n${prefix + command} nik&nama&tempat tanggal lahir&jenis kelamin&gol. darah&alamat&rt/rw&kel.&kec.&agama&status&pekerjaan&kewarganegaraan&berlaku hingga&prov.&kab.`)
-        if (!q1) return reply(`nik lu?`)
-        if (!q2) return reply(`nama lu?`)
-        if (!q3) return reply(`ttg lu?`)
-        if (!q4) return reply(`cwo/cwe?`)
-        if (!q5) return reply(`gol. dar?`)
-        if (!q6) return reply(`alamat?`)
-        if (!q7) return reply(`rt/rw?`)
-        if (!q8) return reply(`kel. ?`)
-        if (!q9) return reply(`kec. ?`)
-        if (!q10) return reply(`agama?`)
-        if (!q11) return reply(`status?`)
-        if (!q12) return reply(`pekerjaan?`)
-        if (!q13) return reply(`warganegara?`)
-        if (!q14) return reply(`berlaku hingga?`)
-        if (!q15) return reply(`prov. ?`)
-        if (!q16) return reply(`kab. ?`)
+        if (!q1) return reply(`*Harap diisi semuanya*\nnik lu?`)
+        if (!q2) return reply(`*Harap diisi semuanya*\nnama lu?`)
+        if (!q3) return reply(`*Harap diisi semuanya*\nttg lu?`)
+        if (!q4) return reply(`*Harap diisi semuanya*\ncwo/cwe?`)
+        if (!q5) return reply(`*Harap diisi semuanya*\ngol. dar?`)
+        if (!q6) return reply(`*Harap diisi semuanya*\nalamat?`)
+        if (!q7) return reply(`*Harap diisi semuanya*\nrt/rw?`)
+        if (!q8) return reply(`*Harap diisi semuanya*\nkel. ?`)
+        if (!q9) return reply(`*Harap diisi semuanya*\nkec. ?`)
+        if (!q10) return reply(`*Harap diisi semuanya*\nagama?`)
+        if (!q11) return reply(`*Harap diisi semuanya*\nstatus?`)
+        if (!q12) return reply(`*Harap diisi semuanya*\npekerjaan?`)
+        if (!q13) return reply(`*Harap diisi semuanya*\nwarganegara?`)
+        if (!q14) return reply(`*Harap diisi semuanya*\nberlaku hingga?`)
+        if (!q15) return reply(`*Harap diisi semuanya*\nprov. ?`)
+        if (!q16) return reply(`*Harap diisi semuanya*\nkab. ?`)
         reply(mess.wait)
         try {
         let ktpimg = await await conn.downloadAndSaveMediaMessage(msg, 'image', `./sticker/ktpmaker.jpg`)
@@ -1588,7 +1587,7 @@ ${setting.group.link}`)
         const timestamp = speed()
         const latensi = speed() - timestamp
         var { upload, download } = await checkBandwidth()
-        reply(`*BOT STATUS*\n× *Speed :* ${latensi.toFixed(4)} Second\n× *Runtime :* ${runtime(process.uptime())}\n\n*HOST*\n× *Arch :* ${os.arch()}\n× *CPU :* ${os.cpus()[0].model}${os.cpus().length > 1 ? " (" + os.cpus().length + "x)" : ""}\n× *Platform :* ${os.platform()}\n\n*STATISTIK*\n× *Download :* ${download}\n× *Upload :* ${upload}\n`)
+        reply(`*BOT STATUS*\n× *Speed :* ${latensi.toFixed(4)} Second\n× *Runtime :* ${runtime(process.uptime())}\n\n*HOST*\n× *Arch :* ${os.arch()}\n× *CPU :* ${os.cpus()[0].model}${os.cpus().length > 1 ? " (" + os.cpus().length + "x)" : ""}\n× *Platform :* ${os.platform()}\n`)
         break
       case 'rules': {
         if (cekUser("id", sender) == null) return reply(mess.OnlyUser)
